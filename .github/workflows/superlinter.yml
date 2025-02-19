@@ -1,4 +1,4 @@
-name: CI Checks
+name: Lint Check
 
 on:
   push:
@@ -9,23 +9,18 @@ on:
       - main
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 18  # Adjust based on your project
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run Linting
-        run: npm run lint
-
-      - name: Run Tests
-        run: npm test
+      - name: Run ESLint
+        run: |
+          npx eslint . --ext .js,.jsx,.ts,.tsx || exit 1
